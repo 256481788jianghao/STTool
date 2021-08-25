@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STTool.File;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,9 @@ namespace STTool
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        string FolderPath = "";
+        FileMgr m_FileMgr;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +36,15 @@ namespace STTool
             if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ShowLabel_Dic.ValueStr = dialog.SelectedPath;
+                FolderPath = dialog.SelectedPath;
             }
+        }
+
+        private void Button_Parse_Click(object sender, RoutedEventArgs e)
+        {
+            m_FileMgr = new FileMgr(FolderPath);
+            m_FileMgr.Parse();
+            TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
         }
     }
 }

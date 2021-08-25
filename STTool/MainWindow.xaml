@@ -20,7 +20,20 @@
             </Grid.ColumnDefinitions>
             <pu:ShowLabel x:Name="ShowLabel_Dic" ValueWidth="5*" NameStr="目录："></pu:ShowLabel>
             <Button x:Name="Button_DicSelect" Content="选择" Grid.Column="1" Click="Button_DicSelect_Click"/>
-            <Button x:Name="Button_Parse" Content="解析" Grid.Column="2"></Button>
+            <Button x:Name="Button_Parse" Content="解析" Grid.Column="2" Click="Button_Parse_Click"></Button>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView x:Name="TreeView_F">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
         </Grid>
     </Grid>
 </Window>
