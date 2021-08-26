@@ -13,9 +13,11 @@ namespace STTool.STFile
         public string DeclarationText;
         public string ImplementationText;
         public string name;
+        public string parentName;
 
-        public STMethod(XmlNode node)
+        public STMethod(string pName,XmlNode node)
         {
+            this.parentName = pName;
             this.xnode = node;
             Parse();
         }

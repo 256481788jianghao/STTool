@@ -11,6 +11,8 @@ namespace STTool.STFile
     {
         protected XmlDocument xmlDoc;
 
+        public string Name;
+
         public string DeclarationText;
     }
 }

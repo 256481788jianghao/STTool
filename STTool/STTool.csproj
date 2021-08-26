@@ -91,6 +91,7 @@
     </ApplicationDefinition>
     <Compile Include="STFile\STFile.cs" />
     <Compile Include="STFile\STGVLFile.cs" />
+    <Compile Include="STFile\STInterfaceFile.cs" />
     <Compile Include="STFile\STMethod.cs" />
     <Compile Include="STFile\STPOUFile.cs" />
     <Page Include="MainWindow.xaml">

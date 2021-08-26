@@ -19,6 +19,9 @@ namespace STTool.STFile
 
         public void Parse()
         {
+            XmlNode pNode = xmlDoc.SelectSingleNode("/TcPlcObject/POU");
+            Name = pNode.Attributes["Name"].Value;
+
             XmlNode node = xmlDoc.SelectSingleNode("/TcPlcObject/POU/Declaration");
             if (node != null)
             {
@@ -42,13 +45,13 @@ namespace STTool.STFile
             XmlNodeList methodList = xmlDoc.SelectNodes("/TcPlcObject/POU/Method");
             foreach(XmlNode item in methodList)
             {
-                MethodList.Add(new STMethod(item));
+                MethodList.Add(new STMethod(Name,item));
             }
 
             XmlNodeList actionList = xmlDoc.SelectNodes("/TcPlcObject/POU/Action");
             foreach (XmlNode item in actionList)
             {
-                MethodList.Add(new STMethod(item));
+                MethodList.Add(new STMethod(Name,item));
             }
         }
     }

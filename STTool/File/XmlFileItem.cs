@@ -36,6 +36,10 @@ namespace STTool.File
             {
                 stFile = new STPOUFile(xmlDoc);
             }
+            else if (GetFileType() == FileType.Interface)
+            {
+                stFile = new STInterfaceFile(xmlDoc);
+            }
         }
 
 

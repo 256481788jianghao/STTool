@@ -38,14 +38,18 @@ namespace STTool
             {
                 ShowLabel_Dic.ValueStr = dialog.SelectedPath;
                 FolderPath = dialog.SelectedPath;
+
+                m_FileMgr = new FileMgr(FolderPath);
+                m_FileMgr.Parse();
+                TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
             }
         }
 
         private void Button_Parse_Click(object sender, RoutedEventArgs e)
         {
-            m_FileMgr = new FileMgr(FolderPath);
-            m_FileMgr.Parse();
-            TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
+            //m_FileMgr = new FileMgr(FolderPath);
+            //m_FileMgr.Parse();
+            //TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
         }
 
         private void TreeView_F_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -53,11 +57,13 @@ namespace STTool
             FileTreeViewItem item = (FileTreeViewItem)(e.NewValue);
             if(item != null)
             {
+                TextBlock_D.Text = "";
+                TextBlock_I.Text = "";
                 if (!item.IsFolder)
                 {
                     if (item.IsMethod)
                     {
-                        STMethod method = m_FileMgr.FindMethodByName(item.Name);
+                        STMethod method = m_FileMgr.FindMethodByName(item.Name,item.MethodParent);
                         if(method != null)
                         {
                             TextBlock_D.Text = method.DeclarationText;

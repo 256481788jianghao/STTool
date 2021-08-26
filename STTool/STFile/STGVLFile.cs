@@ -18,6 +18,9 @@ namespace STTool.STFile
 
         public void Parse()
         {
+            XmlNode pNode = xmlDoc.SelectSingleNode("/TcPlcObject/GVL");
+            Name = pNode.Attributes["Name"].Value;
+
             XmlNode node = xmlDoc.SelectSingleNode("/TcPlcObject/GVL/Declaration");
             if (node != null)
             {

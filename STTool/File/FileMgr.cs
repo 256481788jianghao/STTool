@@ -50,7 +50,7 @@ namespace STTool.File
             }
         }
 
-        public STMethod FindMethodByName(string name)
+        public STMethod FindMethodByName(string name,string parentName)
         {
             if (XmlFileList.Count > 0)
             {
@@ -60,9 +60,23 @@ namespace STTool.File
                     if (item.GetFileType() == XmlFileItem.FileType.POU)
                     {
                         STPOUFile pouFile = (STPOUFile)item.stFile;
-                        if (pouFile.MethodList.Count > 0)
+                        if (pouFile.Name == parentName && pouFile.MethodList.Count > 0)
                         {
                             foreach (STMethod method in pouFile.MethodList)
+                            {
+                                if (method.name == name)
+                                {
+                                    return method;
+                                }
+                            }
+                        }
+                    }
+                    if (item.GetFileType() == XmlFileItem.FileType.Interface)
+                    {
+                        STInterfaceFile InterfaceFile = (STInterfaceFile)item.stFile;
+                        if (InterfaceFile.Name == parentName && InterfaceFile.MethodList.Count > 0)
+                        {
+                            foreach (STMethod method in InterfaceFile.MethodList)
                             {
                                 if (method.name == name)
                                 {
@@ -105,6 +119,22 @@ namespace STTool.File
                                     FileTreeViewItem subitem = new FileTreeViewItem();
                                     subitem.Name = method.name;
                                     subitem.IsMethod = true;
+                                    subitem.MethodParent = stPouFile.Name;
+                                    item.Children.Add(subitem);
+                                }
+                            }
+                        }
+                        if(xmlItem.GetFileType() == XmlFileItem.FileType.Interface)
+                        {
+                            STInterfaceFile stInterfaceFile = (STInterfaceFile)xmlItem.stFile;
+                            if (stInterfaceFile.MethodList.Count > 0)
+                            {
+                                foreach (STMethod method in stInterfaceFile.MethodList)
+                                {
+                                    FileTreeViewItem subitem = new FileTreeViewItem();
+                                    subitem.Name = method.name;
+                                    subitem.IsMethod = true;
+                                    subitem.MethodParent = stInterfaceFile.Name;
                                     item.Children.Add(subitem);
                                 }
                             }
