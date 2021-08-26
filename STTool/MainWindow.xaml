@@ -68,11 +68,11 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <GroupBox Header="引用此模块的模块">
-                    <ListView x:Name="ListView_YinYong">
+                    <ListView x:Name="ListView_YinYong" SelectionChanged="ListView_YinYong_SelectionChanged">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="模块" Width="280" DisplayMemberBinding="{Binding FBName}"></GridViewColumn>
-                                <GridViewColumn Header="路径" Width="280" DisplayMemberBinding="{Binding FullName}"></GridViewColumn>
+                                <GridViewColumn Header="路径" Width="580" DisplayMemberBinding="{Binding FullName}"></GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>

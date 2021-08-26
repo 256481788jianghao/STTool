@@ -112,5 +112,63 @@ namespace STTool
                 }
             }
         }
+
+        private void ListView_YinYong_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Windows.Controls.ListView kk = (System.Windows.Controls.ListView)sender;
+            YinYongListViewItem Item = (YinYongListViewItem)(kk.SelectedItem);
+            if(Item != null)
+            {
+                if (!Item.IsMethod)
+                {
+                    XmlFileItem xmlitem = GVL.gFileMgr.FindXmlItemByName(Item.FBName);
+                    if (xmlitem != null)
+                    {
+                        switch (xmlitem.GetFileType())
+                        {
+                            case XmlFileItem.FileType.GVL:
+                                {
+                                    STGVLFile gvlFile = (STGVLFile)xmlitem.stFile;
+                                    TextBlock_D.Text = gvlFile.DeclarationText;
+                                    break;
+                                }
+                            case XmlFileItem.FileType.POU:
+                                {
+                                    STPOUFile pouFile = (STPOUFile)xmlitem.stFile;
+                                    TextBlock_D.Text = pouFile.DeclarationText;
+                                    TextBlock_I.Text = pouFile.ImplementationText;
+                                    ListView_YinYong.ItemsSource = GVL.gFileMgr.FindYinYongList(pouFile.Name);
+                                    break;
+                                }
+                            case XmlFileItem.FileType.DUT:
+                                {
+                                    STDUTFile dutFile = (STDUTFile)xmlitem.stFile;
+                                    TextBlock_D.Text = dutFile.DeclarationText;
+                                    break;
+                                }
+                            default: { return; }
+                        }
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("not find " + Item.FBName);
+                    }
+                }
+                else
+                {
+                    string[] strlist = Item.FBName.Split('.');
+                    STMethod method = GVL.gFileMgr.FindMethodByName(strlist[1], strlist[0]);
+                    if (method != null)
+                    {
+                        TextBlock_D.Text = method.DeclarationText;
+                        TextBlock_I.Text = method.ImplementationText;
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("not find " + Item.FBName);
+                    }
+                }
+            }
+        }
     }
 }

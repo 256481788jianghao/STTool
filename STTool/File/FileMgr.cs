@@ -104,9 +104,19 @@ namespace STTool.File
                     if (xmlitem.GetFileType() == XmlFileItem.FileType.POU)
                     {
                         STPOUFile stPOUFile = (STPOUFile)xmlitem.stFile;
-                        if (stPOUFile.Name != Name && (stPOUFile.DeclarationText.Contains(Name) || stPOUFile.ImplementationText.Contains(Name)))
+                        if (stPOUFile.Name != Name && (stPOUFile.DeclarationText.Contains(Name)))
                         {
-                            retList.Add(new YinYongListViewItem(stPOUFile.Name,xmlitem.FullName));
+                            retList.Add(new YinYongListViewItem(stPOUFile.Name,xmlitem.FullName,false));
+                        }
+                        if(stPOUFile.MethodList.Count > 0)
+                        {
+                            foreach(STMethod method in stPOUFile.MethodList)
+                            {
+                                if(method.DeclarationText.Contains(Name))
+                                {
+                                    retList.Add(new YinYongListViewItem(method.parentName+"."+method.Name, xmlitem.FullName,true));
+                                }
+                            }
                         }
                     }
                 }

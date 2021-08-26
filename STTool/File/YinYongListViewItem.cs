@@ -13,10 +13,13 @@ namespace STTool.File
         public string FBName { get; set; }
         public string FullName { get; set; }
 
-        public YinYongListViewItem(string fBName,string fullName)
+        public bool IsMethod { get; set; }
+
+        public YinYongListViewItem(string fBName,string fullName,bool isMethod)
         {
             FBName = fBName;
             FullName = fullName;
+            IsMethod = isMethod;
         }
     }
 }
