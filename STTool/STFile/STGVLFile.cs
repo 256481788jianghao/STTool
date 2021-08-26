@@ -8,12 +8,8 @@ using System.Xml;
 namespace STTool.STFile
 {
   
-    class STGVLFile
+    class STGVLFile:STFile
     {
-        XmlDocument xmlDoc;
-
-        public string DeclarationText;
-
         public STGVLFile(XmlDocument xmlDoc)
         {
             this.xmlDoc = xmlDoc;

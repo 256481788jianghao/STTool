@@ -32,6 +32,10 @@ namespace STTool.File
             {
                 stFile = new STGVLFile(xmlDoc);
             }
+            else if (GetFileType() == FileType.POU)
+            {
+                stFile = new STPOUFile(xmlDoc);
+            }
         }
 
 

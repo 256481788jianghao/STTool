@@ -55,23 +55,46 @@ namespace STTool
             {
                 if (!item.IsFolder)
                 {
-                    XmlFileItem xmlitem = m_FileMgr.FindXmlItemByName(item.Name);
-                    if(xmlitem != null)
+                    if (item.IsMethod)
                     {
-                        switch (xmlitem.GetFileType())
+                        STMethod method = m_FileMgr.FindMethodByName(item.Name);
+                        if(method != null)
                         {
-                            case XmlFileItem.FileType.GVL: 
-                                {
-                                    STGVLFile gvlFile = (STGVLFile)xmlitem.stFile;
-                                    TextBlock_D.Text = gvlFile.DeclarationText;
-                                    break; 
-                                }
-                            default: { return; }
+                            TextBlock_D.Text = method.DeclarationText;
+                            TextBlock_I.Text = method.ImplementationText;
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("not find " + item.Name);
                         }
                     }
                     else
                     {
-                        System.Windows.MessageBox.Show("not find " + item.Name);
+                        XmlFileItem xmlitem = m_FileMgr.FindXmlItemByName(item.Name);
+                        if (xmlitem != null)
+                        {
+                            switch (xmlitem.GetFileType())
+                            {
+                                case XmlFileItem.FileType.GVL:
+                                    {
+                                        STGVLFile gvlFile = (STGVLFile)xmlitem.stFile;
+                                        TextBlock_D.Text = gvlFile.DeclarationText;
+                                        break;
+                                    }
+                                case XmlFileItem.FileType.POU:
+                                    {
+                                        STPOUFile pouFile = (STPOUFile)xmlitem.stFile;
+                                        TextBlock_D.Text = pouFile.DeclarationText;
+                                        TextBlock_I.Text = pouFile.ImplementationText;
+                                        break;
+                                    }
+                                default: { return; }
+                            }
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("not find " + item.Name);
+                        }
                     }
                 }
             }

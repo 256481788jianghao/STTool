@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STTool.STFile;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,6 +50,35 @@ namespace STTool.File
             }
         }
 
+        public STMethod FindMethodByName(string name)
+        {
+            if (XmlFileList.Count > 0)
+            {
+                STMethod ret = null;
+                foreach (XmlFileItem item in XmlFileList)
+                {
+                    if (item.GetFileType() == XmlFileItem.FileType.POU)
+                    {
+                        STPOUFile pouFile = (STPOUFile)item.stFile;
+                        if (pouFile.MethodList.Count > 0)
+                        {
+                            foreach (STMethod method in pouFile.MethodList)
+                            {
+                                if (method.name == name)
+                                {
+                                    return method;
+                                }
+                            }
+                        }
+                    }
+                }
+                return ret;
+            }
+            else
+            {
+                return null;
+            }
+        }
         void ParseInternal(FileTreeViewItem parent,DirectoryInfo Folder)
         {
             
@@ -59,12 +89,29 @@ namespace STTool.File
                 {
                     FileTreeViewItem item = new FileTreeViewItem();
                     item.Name = info.Name;
-                    parent.Children.Add(item);
+                    
                     string fullName = info.FullName;
                     if(fullName.Contains("TcPOU") || fullName.Contains("TcDUT") || fullName.Contains("TcGVL") || fullName.Contains("TcIO"))
                     {
-                        XmlFileList.Add(new XmlFileItem(info.FullName));
+                        XmlFileItem xmlItem = new XmlFileItem(info.FullName);
+                        XmlFileList.Add(xmlItem);
+                        if(xmlItem.GetFileType() == XmlFileItem.FileType.POU)
+                        {
+                            STPOUFile stPouFile = (STPOUFile)xmlItem.stFile;
+                            if(stPouFile.MethodList.Count > 0)
+                            {
+                                foreach (STMethod method in stPouFile.MethodList)
+                                {
+                                    FileTreeViewItem subitem = new FileTreeViewItem();
+                                    subitem.Name = method.name;
+                                    subitem.IsMethod = true;
+                                    item.Children.Add(subitem);
+                                }
+                            }
+                        }
                     }
+
+                    parent.Children.Add(item);
                 }
             }
             DirectoryInfo[] dInfo = Folder.GetDirectories();
