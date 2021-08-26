@@ -16,6 +16,7 @@ namespace STTool.File
             GVL,
             POU,
             Interface,
+            DUT,
             UnKnown
         }
         public string FullName { get; set; }
@@ -40,6 +41,10 @@ namespace STTool.File
             {
                 stFile = new STInterfaceFile(xmlDoc);
             }
+            else if (GetFileType() == FileType.DUT)
+            {
+                stFile = new STDUTFile(xmlDoc);
+            }
         }
 
 
@@ -57,6 +62,10 @@ namespace STTool.File
             else if (ExtensionName.Contains("TcIO"))
             {
                 return FileType.Interface;
+            }
+            else if (ExtensionName.Contains("TcDUT"))
+            {
+                return FileType.DUT;
             }
             else
             {

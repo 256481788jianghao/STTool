@@ -94,6 +94,12 @@ namespace STTool
                                         TextBlock_I.Text = pouFile.ImplementationText;
                                         break;
                                     }
+                                case XmlFileItem.FileType.DUT:
+                                    {
+                                        STDUTFile dutFile = (STDUTFile)xmlitem.stFile;
+                                        TextBlock_D.Text = dutFile.DeclarationText;
+                                        break;
+                                    }
                                 default: { return; }
                             }
                         }
