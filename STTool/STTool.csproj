@@ -89,6 +89,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="File\YinYongListViewItem.cs" />
+    <Compile Include="GVL.cs" />
     <Compile Include="STFile\STDUTFile.cs" />
     <Compile Include="STFile\STFile.cs" />
     <Compile Include="STFile\STGVLFile.cs" />

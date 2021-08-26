@@ -9,10 +9,16 @@
         Title="STTool" Height="450" Width="800" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Menu>
+            <MenuItem Header="分析">
+                <MenuItem Header="被引用堆栈"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="50"/>
@@ -22,10 +28,11 @@
             <Button x:Name="Button_DicSelect" Content="选择" Grid.Column="1" Click="Button_DicSelect_Click"/>
             <Button x:Name="Button_Parse" Content="解析" Grid.Column="2" Click="Button_Parse_Click"></Button>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <TreeView x:Name="TreeView_F" SelectedItemChanged="TreeView_F_SelectedItemChanged">
@@ -53,6 +60,23 @@
                         <TextBox Name="TextBlock_I"></TextBox>
                     </ScrollViewer>
                 </Border>
+            </Grid>
+            <GridSplitter Width="5" HorizontalAlignment="Stretch" ResizeDirection="Columns" Grid.Column="2"></GridSplitter>
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="引用此模块的模块">
+                    <ListView x:Name="ListView_YinYong">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="模块" Width="280" DisplayMemberBinding="{Binding FBName}"></GridViewColumn>
+                                <GridViewColumn Header="路径" Width="280" DisplayMemberBinding="{Binding FullName}"></GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
             </Grid>
         </Grid>
     </Grid>

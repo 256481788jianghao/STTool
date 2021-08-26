@@ -13,6 +13,7 @@ namespace STTool.STFile
         public STInterfaceFile(XmlDocument xmlDoc)
         {
             this.xmlDoc = xmlDoc;
+            STModeType = STType.INTERFACE;
             Parse();
         }
 

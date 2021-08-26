@@ -13,6 +13,7 @@ namespace STTool.STFile
         public STGVLFile(XmlDocument xmlDoc)
         {
             this.xmlDoc = xmlDoc;
+            STModeType = STType.GVL;
             Parse();
         }
 

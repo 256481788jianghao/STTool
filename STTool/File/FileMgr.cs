@@ -64,7 +64,7 @@ namespace STTool.File
                         {
                             foreach (STMethod method in pouFile.MethodList)
                             {
-                                if (method.name == name)
+                                if (method.Name == name)
                                 {
                                     return method;
                                 }
@@ -78,7 +78,7 @@ namespace STTool.File
                         {
                             foreach (STMethod method in InterfaceFile.MethodList)
                             {
-                                if (method.name == name)
+                                if (method.Name == name)
                                 {
                                     return method;
                                 }
@@ -92,6 +92,26 @@ namespace STTool.File
             {
                 return null;
             }
+        }
+
+        public List<YinYongListViewItem> FindYinYongList(string Name)
+        {
+            List<YinYongListViewItem> retList = new List<YinYongListViewItem>();
+            if(XmlFileList.Count > 0)
+            {
+                foreach(XmlFileItem xmlitem in XmlFileList)
+                {
+                    if (xmlitem.GetFileType() == XmlFileItem.FileType.POU)
+                    {
+                        STPOUFile stPOUFile = (STPOUFile)xmlitem.stFile;
+                        if (stPOUFile.Name != Name && (stPOUFile.DeclarationText.Contains(Name) || stPOUFile.ImplementationText.Contains(Name)))
+                        {
+                            retList.Add(new YinYongListViewItem(stPOUFile.Name,xmlitem.FullName));
+                        }
+                    }
+                }
+            }
+            return retList;
         }
         void ParseInternal(FileTreeViewItem parent,DirectoryInfo Folder)
         {
@@ -117,7 +137,7 @@ namespace STTool.File
                                 foreach (STMethod method in stPouFile.MethodList)
                                 {
                                     FileTreeViewItem subitem = new FileTreeViewItem();
-                                    subitem.Name = method.name;
+                                    subitem.Name = method.Name;
                                     subitem.IsMethod = true;
                                     subitem.MethodParent = stPouFile.Name;
                                     item.Children.Add(subitem);
@@ -132,7 +152,7 @@ namespace STTool.File
                                 foreach (STMethod method in stInterfaceFile.MethodList)
                                 {
                                     FileTreeViewItem subitem = new FileTreeViewItem();
-                                    subitem.Name = method.name;
+                                    subitem.Name = method.Name;
                                     subitem.IsMethod = true;
                                     subitem.MethodParent = stInterfaceFile.Name;
                                     item.Children.Add(subitem);

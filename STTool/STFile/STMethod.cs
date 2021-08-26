@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using static STTool.STFile.STFile;
 
 namespace STTool.STFile
 {
-    class STMethod
+    class STMethod:STFile
     {
         XmlNode xnode;
-        public string DeclarationText;
+        
         public string ImplementationText;
-        public string name;
+        
         public string parentName;
+        
 
         public STMethod(string pName,XmlNode node)
         {
@@ -24,12 +26,13 @@ namespace STTool.STFile
 
         void Parse()
         {
-            name = xnode.Attributes["Name"].Value;
+            Name = xnode.Attributes["Name"].Value;
 
             XmlNode node = xnode.SelectSingleNode("Declaration");
             if (node != null)
             {
                 DeclarationText = node.InnerText;
+                STModeType = STType.METHOD;
             }
             else
             {

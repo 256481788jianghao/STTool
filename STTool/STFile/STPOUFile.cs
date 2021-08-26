@@ -17,6 +17,25 @@ namespace STTool.STFile
             Parse(); 
         }
 
+        public void ParseModeType(string Dstr)
+        {
+            string[] lines = Dstr.Split('\n');
+            string firstLine = lines[0];
+            string[] firstLineSp = firstLine.Split(' ');
+            if (firstLineSp[0].Contains("PROGRAM"))
+            {
+                STModeType = STType.PROGRAM;
+            }
+            else if (firstLineSp[0].Contains("FUNCTION_BLOCK"))
+            {
+                STModeType = STType.FUNCTIONBLOCK;
+            }
+            else if (firstLineSp[0].Contains("FUNCTION"))
+            {
+                STModeType = STType.FUNCTION;
+            }
+        }
+
         public void Parse()
         {
             XmlNode pNode = xmlDoc.SelectSingleNode("/TcPlcObject/POU");
@@ -26,6 +45,7 @@ namespace STTool.STFile
             if (node != null)
             {
                 DeclarationText = node.InnerText;
+                ParseModeType(DeclarationText);
             }
             else
             {

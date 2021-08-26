@@ -25,7 +25,7 @@ namespace STTool
     {
 
         string FolderPath = "";
-        FileMgr m_FileMgr;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -39,9 +39,9 @@ namespace STTool
                 ShowLabel_Dic.ValueStr = dialog.SelectedPath;
                 FolderPath = dialog.SelectedPath;
 
-                m_FileMgr = new FileMgr(FolderPath);
-                m_FileMgr.Parse();
-                TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
+                GVL.gFileMgr = new FileMgr(FolderPath);
+                GVL.gFileMgr.Parse();
+                TreeView_F.ItemsSource = GVL.gFileMgr.FileTreeViewList;
             }
         }
 
@@ -63,7 +63,7 @@ namespace STTool
                 {
                     if (item.IsMethod)
                     {
-                        STMethod method = m_FileMgr.FindMethodByName(item.Name,item.MethodParent);
+                        STMethod method = GVL.gFileMgr.FindMethodByName(item.Name,item.MethodParent);
                         if(method != null)
                         {
                             TextBlock_D.Text = method.DeclarationText;
@@ -76,7 +76,7 @@ namespace STTool
                     }
                     else
                     {
-                        XmlFileItem xmlitem = m_FileMgr.FindXmlItemByName(item.Name);
+                        XmlFileItem xmlitem = GVL.gFileMgr.FindXmlItemByName(item.Name);
                         if (xmlitem != null)
                         {
                             switch (xmlitem.GetFileType())
@@ -92,6 +92,7 @@ namespace STTool
                                         STPOUFile pouFile = (STPOUFile)xmlitem.stFile;
                                         TextBlock_D.Text = pouFile.DeclarationText;
                                         TextBlock_I.Text = pouFile.ImplementationText;
+                                        ListView_YinYong.ItemsSource = GVL.gFileMgr.FindYinYongList(pouFile.Name);
                                         break;
                                     }
                                 case XmlFileItem.FileType.DUT:
