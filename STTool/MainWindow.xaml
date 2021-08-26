@@ -26,14 +26,34 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <TreeView x:Name="TreeView_F">
+            <TreeView x:Name="TreeView_F" SelectedItemChanged="TreeView_F_SelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <TextBlock Text="{Binding Name}"></TextBlock>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TextBox Name="TextBlock_D"></TextBox>
+                    </ScrollViewer>
+                    
+                </Border>
+                <GridSplitter  Grid.Row="1" HorizontalAlignment="Stretch" ResizeDirection="Rows" Height="5"></GridSplitter>
+                <Border BorderThickness="1" Grid.Row="2" BorderBrush="Black">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TextBox Name="TextBlock_I"></TextBox>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

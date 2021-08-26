@@ -11,7 +11,7 @@ namespace STTool.File
     {
         string m_rootpath;
         public List<FileTreeViewItem> FileTreeViewList = new List<FileTreeViewItem>();
-        public List<string> FullNameFileList = new List<string>();
+        public List<XmlFileItem> XmlFileList = new List<XmlFileItem>();
         public FileMgr(string rootpath)
         {
             this.m_rootpath = rootpath;
@@ -26,32 +26,49 @@ namespace STTool.File
             FileTreeViewList.Add(item);
         }
 
+        public XmlFileItem FindXmlItemByName(string name)
+        {
+            if(XmlFileList.Count > 0)
+            {
+                XmlFileItem ret = null;
+                foreach(XmlFileItem item in XmlFileList)
+                {
+                    string fullName = item.FullName;
+                    string FileName = System.IO.Path.GetFileName(fullName);
+                    if (FileName.Contains(name))
+                    {
+                        ret = item;
+                        break;
+                    }
+                }
+                return ret;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         void ParseInternal(FileTreeViewItem parent,DirectoryInfo Folder)
         {
-            DirectoryInfo[] dInfo = Folder.GetDirectories();
-            if(dInfo.Length == 0)
+            
+            FileInfo[] fInfo = Folder.GetFiles();
+            if (fInfo.Length > 0)
             {
-                FileInfo[] fInfo = Folder.GetFiles();
-                if(fInfo.Length == 0)
+                foreach(FileInfo info in fInfo)
                 {
-                    return;
-                }
-                else
-                {
-                    foreach(FileInfo info in fInfo)
+                    FileTreeViewItem item = new FileTreeViewItem();
+                    item.Name = info.Name;
+                    parent.Children.Add(item);
+                    string fullName = info.FullName;
+                    if(fullName.Contains("TcPOU") || fullName.Contains("TcDUT") || fullName.Contains("TcGVL") || fullName.Contains("TcIO"))
                     {
-                        FileTreeViewItem item = new FileTreeViewItem();
-                        item.Name = info.Name;
-                        parent.Children.Add(item);
-                        string fullName = info.FullName;
-                        if(fullName.Contains("TcPOU") || fullName.Contains("TcDUT"))
-                        {
-                            FullNameFileList.Add(info.FullName);
-                        }
+                        XmlFileList.Add(new XmlFileItem(info.FullName));
                     }
                 }
             }
-            else
+            DirectoryInfo[] dInfo = Folder.GetDirectories();
+            if (dInfo.Length > 0)
             {
                 foreach(DirectoryInfo info in dInfo)
                 {

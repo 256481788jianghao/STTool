@@ -1,4 +1,5 @@
 ﻿using STTool.File;
+using STTool.STFile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,35 @@ namespace STTool
             m_FileMgr = new FileMgr(FolderPath);
             m_FileMgr.Parse();
             TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
+        }
+
+        private void TreeView_F_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            FileTreeViewItem item = (FileTreeViewItem)(e.NewValue);
+            if(item != null)
+            {
+                if (!item.IsFolder)
+                {
+                    XmlFileItem xmlitem = m_FileMgr.FindXmlItemByName(item.Name);
+                    if(xmlitem != null)
+                    {
+                        switch (xmlitem.GetFileType())
+                        {
+                            case XmlFileItem.FileType.GVL: 
+                                {
+                                    STGVLFile gvlFile = (STGVLFile)xmlitem.stFile;
+                                    TextBlock_D.Text = gvlFile.DeclarationText;
+                                    break; 
+                                }
+                            default: { return; }
+                        }
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("not find " + item.Name);
+                    }
+                }
+            }
         }
     }
 }
