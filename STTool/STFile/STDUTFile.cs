@@ -7,11 +7,11 @@ using System.Xml;
 
 namespace STTool.STFile
 {
-    class STDUTFile : STFile
+    class STDUTFile : STFileBase
     {
-        public STDUTFile(XmlDocument xmlDoc)
+        public STDUTFile(string fullName):base(fullName)
         {
-            this.xmlDoc = xmlDoc;
+            FileType = STFileType.DUT;
             Parse();
         }
 

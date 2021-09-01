@@ -7,26 +7,31 @@ using System.Xml;
 
 namespace STTool.STFile
 {
-    class STFile
+    class STFileBase
     {
-        public enum STType
+        public enum STFileType
         {
-            STRUCT,
-            ENUM,
-            GVL,
-            FUNCTION,
-            FUNCTIONBLOCK,
-            PROGRAM,
-            METHOD,
-            ACTION,
+            POU,
+            DUT,
             INTERFACE,
-            UNKNOWN,
+            GVL,
+            UNKNOWN
         }
+
 
         protected XmlDocument xmlDoc;
 
         public string Name;
         public string DeclarationText;
-        public STType STModeType = STType.UNKNOWN;
+        public string ImplementationText;
+        public STFileType FileType = STFileType.UNKNOWN;
+        public string FullName;
+
+        public STFileBase(string fullName)
+        {
+            FullName = fullName;
+            xmlDoc = new XmlDocument();
+            xmlDoc.Load(FullName);
+        }
     }
 }

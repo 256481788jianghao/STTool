@@ -11,6 +11,7 @@ namespace STTool.File
     class FileTreeViewItem
     {
         public string Name { get; set; }
+        public string FullName { get; set; }
         public List<FileTreeViewItem> Children { get; set; } = new List<FileTreeViewItem>();
         public bool IsFolder { get; set; } = false;
         public bool IsMethod { get; set; } = false;

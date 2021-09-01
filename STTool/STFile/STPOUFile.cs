@@ -7,33 +7,13 @@ using System.Xml;
 
 namespace STTool.STFile
 {
-    class STPOUFile : STFile
+    class STPOUFile : STFileBase
     {
-        public string ImplementationText;
         public List<STMethod> MethodList = new List<STMethod>();
-        public STPOUFile(XmlDocument xmlDoc)
+        public STPOUFile(string fullName) : base(fullName)
         {
-            this.xmlDoc = xmlDoc;
+            FileType = STFileType.POU;
             Parse(); 
-        }
-
-        public void ParseModeType(string Dstr)
-        {
-            string[] lines = Dstr.Split('\n');
-            string firstLine = lines[0];
-            string[] firstLineSp = firstLine.Split(' ');
-            if (firstLineSp[0].Contains("PROGRAM"))
-            {
-                STModeType = STType.PROGRAM;
-            }
-            else if (firstLineSp[0].Contains("FUNCTION_BLOCK"))
-            {
-                STModeType = STType.FUNCTIONBLOCK;
-            }
-            else if (firstLineSp[0].Contains("FUNCTION"))
-            {
-                STModeType = STType.FUNCTION;
-            }
         }
 
         public void Parse()
@@ -45,7 +25,6 @@ namespace STTool.STFile
             if (node != null)
             {
                 DeclarationText = node.InnerText;
-                ParseModeType(DeclarationText);
             }
             else
             {

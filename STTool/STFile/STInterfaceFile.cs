@@ -7,13 +7,12 @@ using System.Xml;
 
 namespace STTool.STFile
 {
-    class STInterfaceFile : STFile
+    class STInterfaceFile : STFileBase
     {
         public List<STMethod> MethodList = new List<STMethod>();
-        public STInterfaceFile(XmlDocument xmlDoc)
+        public STInterfaceFile(string fullName) : base(fullName)
         {
-            this.xmlDoc = xmlDoc;
-            STModeType = STType.INTERFACE;
+            FileType = STFileType.INTERFACE;
             Parse();
         }
 

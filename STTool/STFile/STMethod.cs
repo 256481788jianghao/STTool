@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using static STTool.STFile.STFile;
+﻿using System.Xml;
 
 namespace STTool.STFile
 {
-    class STMethod:STFile
+    class STMethod
     {
         XmlNode xnode;
-        
+
+        public string Name;
+        public string DeclarationText;
         public string ImplementationText;
         
         public string parentName;
@@ -32,7 +28,6 @@ namespace STTool.STFile
             if (node != null)
             {
                 DeclarationText = node.InnerText;
-                STModeType = STType.METHOD;
             }
             else
             {

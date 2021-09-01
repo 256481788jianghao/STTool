@@ -8,12 +8,11 @@ using System.Xml;
 namespace STTool.STFile
 {
   
-    class STGVLFile:STFile
+    class STGVLFile: STFileBase
     {
-        public STGVLFile(XmlDocument xmlDoc)
+        public STGVLFile(string fullName) : base(fullName)
         {
-            this.xmlDoc = xmlDoc;
-            STModeType = STType.GVL;
+            FileType = STFileType.GVL;
             Parse();
         }
 

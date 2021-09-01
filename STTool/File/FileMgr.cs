@@ -12,7 +12,7 @@ namespace STTool.File
     {
         string m_rootpath;
         public List<FileTreeViewItem> FileTreeViewList = new List<FileTreeViewItem>();
-        public List<XmlFileItem> XmlFileList = new List<XmlFileItem>();
+        public List<STFileBase> STFileList = new List<STFileBase>();
         public FileMgr(string rootpath)
         {
             this.m_rootpath = rootpath;
@@ -27,39 +27,29 @@ namespace STTool.File
             FileTreeViewList.Add(item);
         }
 
-        public XmlFileItem FindXmlItemByName(string name)
+        public STFileBase FindSTFileByFullName(string fullname)
         {
-            if(XmlFileList.Count > 0)
+            STFileBase ret = null;
+            foreach(STFileBase item in STFileList)
             {
-                XmlFileItem ret = null;
-                foreach(XmlFileItem item in XmlFileList)
+                if(item.FullName == fullname)
                 {
-                    string fullName = item.FullName;
-                    string FileName = System.IO.Path.GetFileName(fullName);
-                    if (FileName.Contains(name))
-                    {
-                        ret = item;
-                        break;
-                    }
+                    return item;
                 }
-                return ret;
             }
-            else
-            {
-                return null;
-            }
+            return ret;
         }
 
         public STMethod FindMethodByName(string name,string parentName)
         {
-            if (XmlFileList.Count > 0)
+            if (STFileList.Count > 0)
             {
                 STMethod ret = null;
-                foreach (XmlFileItem item in XmlFileList)
+                foreach (STFileBase item in STFileList)
                 {
-                    if (item.GetFileType() == XmlFileItem.FileType.POU)
+                    if (item.FileType == STFileBase.STFileType.POU)
                     {
-                        STPOUFile pouFile = (STPOUFile)item.stFile;
+                        STPOUFile pouFile = (STPOUFile)item;
                         if (pouFile.Name == parentName && pouFile.MethodList.Count > 0)
                         {
                             foreach (STMethod method in pouFile.MethodList)
@@ -71,9 +61,9 @@ namespace STTool.File
                             }
                         }
                     }
-                    if (item.GetFileType() == XmlFileItem.FileType.Interface)
+                    if (item.FileType == STFileBase.STFileType.INTERFACE)
                     {
-                        STInterfaceFile InterfaceFile = (STInterfaceFile)item.stFile;
+                        STInterfaceFile InterfaceFile = (STInterfaceFile)item;
                         if (InterfaceFile.Name == parentName && InterfaceFile.MethodList.Count > 0)
                         {
                             foreach (STMethod method in InterfaceFile.MethodList)
@@ -97,30 +87,7 @@ namespace STTool.File
         public List<YinYongListViewItem> FindYinYongList(string Name)
         {
             List<YinYongListViewItem> retList = new List<YinYongListViewItem>();
-            if(XmlFileList.Count > 0)
-            {
-                foreach(XmlFileItem xmlitem in XmlFileList)
-                {
-                    if (xmlitem.GetFileType() == XmlFileItem.FileType.POU)
-                    {
-                        STPOUFile stPOUFile = (STPOUFile)xmlitem.stFile;
-                        if (stPOUFile.Name != Name && (stPOUFile.DeclarationText.Contains(Name)))
-                        {
-                            retList.Add(new YinYongListViewItem(stPOUFile.Name,xmlitem.FullName,false));
-                        }
-                        if(stPOUFile.MethodList.Count > 0)
-                        {
-                            foreach(STMethod method in stPOUFile.MethodList)
-                            {
-                                if(method.DeclarationText.Contains(Name))
-                                {
-                                    retList.Add(new YinYongListViewItem(method.parentName+"."+method.Name, xmlitem.FullName,true));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            
             return retList;
         }
         void ParseInternal(FileTreeViewItem parent,DirectoryInfo Folder)
@@ -133,15 +100,32 @@ namespace STTool.File
                 {
                     FileTreeViewItem item = new FileTreeViewItem();
                     item.Name = info.Name;
+                    item.FullName = info.FullName;
                     
                     string fullName = info.FullName;
                     if(fullName.Contains("TcPOU") || fullName.Contains("TcDUT") || fullName.Contains("TcGVL") || fullName.Contains("TcIO"))
                     {
-                        XmlFileItem xmlItem = new XmlFileItem(info.FullName);
-                        XmlFileList.Add(xmlItem);
-                        if(xmlItem.GetFileType() == XmlFileItem.FileType.POU)
+                        STFileBase stFileBase = null;
+                        if (fullName.Contains("TcPOU"))
                         {
-                            STPOUFile stPouFile = (STPOUFile)xmlItem.stFile;
+                            stFileBase = new STPOUFile(info.FullName);
+                        }
+                        if (fullName.Contains("TcDUT"))
+                        {
+                            stFileBase = new STDUTFile(info.FullName);
+                        }
+                        if (fullName.Contains("TcGVL"))
+                        {
+                            stFileBase = new STGVLFile(info.FullName);
+                        }
+                        if (fullName.Contains("TcIO"))
+                        {
+                            stFileBase = new STInterfaceFile(info.FullName);
+                        }
+                        STFileList.Add(stFileBase);
+                        if(stFileBase.FileType == STFileBase.STFileType.POU)
+                        {
+                            STPOUFile stPouFile = (STPOUFile)stFileBase;
                             if(stPouFile.MethodList.Count > 0)
                             {
                                 foreach (STMethod method in stPouFile.MethodList)
@@ -154,9 +138,9 @@ namespace STTool.File
                                 }
                             }
                         }
-                        if(xmlItem.GetFileType() == XmlFileItem.FileType.Interface)
+                        if(stFileBase.FileType == STFileBase.STFileType.INTERFACE)
                         {
-                            STInterfaceFile stInterfaceFile = (STInterfaceFile)xmlItem.stFile;
+                            STInterfaceFile stInterfaceFile = (STInterfaceFile)stFileBase;
                             if (stInterfaceFile.MethodList.Count > 0)
                             {
                                 foreach (STMethod method in stInterfaceFile.MethodList)
