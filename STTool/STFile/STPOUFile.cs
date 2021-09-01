@@ -13,7 +13,8 @@ namespace STTool.STFile
         public STPOUFile(string fullName) : base(fullName)
         {
             FileType = STFileType.POU;
-            Parse(); 
+            Parse();
+            ParseSTElement();
         }
 
         public void Parse()

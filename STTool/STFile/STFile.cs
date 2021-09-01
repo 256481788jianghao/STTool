@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STTool.STParse;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,12 +27,19 @@ namespace STTool.STFile
         public string ImplementationText;
         public STFileType FileType = STFileType.UNKNOWN;
         public string FullName;
+        public STElement STObject;
 
         public STFileBase(string fullName)
         {
             FullName = fullName;
             xmlDoc = new XmlDocument();
             xmlDoc.Load(FullName);
+        }
+
+        public void ParseSTElement()
+        {
+            STObject = new STElement();
+            STObject.Parse(DeclarationText, ImplementationText);
         }
     }
 }

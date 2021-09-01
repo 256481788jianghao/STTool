@@ -14,6 +14,7 @@ namespace STTool.STFile
         {
             FileType = STFileType.GVL;
             Parse();
+            ParseSTElement();
         }
 
         public void Parse()

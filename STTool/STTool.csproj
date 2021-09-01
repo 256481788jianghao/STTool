@@ -97,6 +97,10 @@
     <Compile Include="STFile\STInterfaceFile.cs" />
     <Compile Include="STFile\STMethod.cs" />
     <Compile Include="STFile\STPOUFile.cs" />
+    <Compile Include="STParse\STDeclarationElement.cs" />
+    <Compile Include="STParse\STElement.cs" />
+    <Compile Include="STParse\STImplementationElement.cs" />
+    <Compile Include="STParse\STLine.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

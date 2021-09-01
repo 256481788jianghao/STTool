@@ -14,6 +14,7 @@ namespace STTool.STFile
         {
             FileType = STFileType.INTERFACE;
             Parse();
+            ParseSTElement();
         }
 
         public void Parse()

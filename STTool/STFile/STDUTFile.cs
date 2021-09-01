@@ -13,6 +13,7 @@ namespace STTool.STFile
         {
             FileType = STFileType.DUT;
             Parse();
+            ParseSTElement();
         }
 
         public void Parse()
