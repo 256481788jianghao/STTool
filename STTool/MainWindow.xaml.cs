@@ -1,5 +1,6 @@
 ﻿using STTool.File;
 using STTool.STFile;
+using STTool.STParse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,34 @@ namespace STTool
             //TreeView_F.ItemsSource = m_FileMgr.FileTreeViewList;
         }
 
+        private List<YinYongListViewItem> FindYinYongByName(string namestr)
+        {
+            List<YinYongListViewItem> ret = new List<YinYongListViewItem>();
+            foreach(STFileBase stfile in GVL.gFileMgr.STFileList)
+            {
+                if(stfile.FileType == STFileBase.STFileType.POU)
+                {
+                    if(stfile.DeclarationElement.VARElements.Count > 0)
+                    {
+                        foreach(STVARElement el in stfile.DeclarationElement.VARElements)
+                        {
+                            if(el.Variables.Count > 0)
+                            {
+                                foreach(STVARIABLEElement v in el.Variables)
+                                {
+                                    if(v.TypeName == namestr)
+                                    {
+                                        ret.Add(new YinYongListViewItem(stfile.Name, stfile.FullName, false)); ;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
         private void TreeView_F_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             FileTreeViewItem item = (FileTreeViewItem)(e.NewValue);
@@ -83,7 +112,10 @@ namespace STTool
                             TextBlock_D.Text = stFileBase.DeclarationText;
                             TextBlock_I.Text = stFileBase.ImplementationText;
 
-                            ListView_YinYong.Items.Add(new YinYongListViewItem(stFileBase.DeclarationElement.Name, stFileBase.DeclarationElement.ElType.ToString(),false));
+                            if(stFileBase.FileType == STFileBase.STFileType.POU)
+                            {
+                                ListView_YinYong.ItemsSource = FindYinYongByName(stFileBase.Name);
+                            }
                         }
                         else
                         {

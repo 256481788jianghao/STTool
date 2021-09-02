@@ -39,10 +39,12 @@ namespace STTool.STParse
             {
                 string[] sp = TypeStr.Split(' ');
                 TypeName = sp.Last();
+                VariableType = STVARIABLETYPE.ARRAY;
             }
             else
             {
                 TypeName = TypeStr;
+                VariableType = STVARIABLETYPE.SINGLE;
             }
         }
     }
