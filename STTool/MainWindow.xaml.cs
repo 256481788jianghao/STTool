@@ -112,6 +112,8 @@ namespace STTool
                             TextBlock_D.Text = stFileBase.DeclarationText;
                             TextBlock_I.Text = stFileBase.ImplementationText;
 
+                            GroupBox_YinYong.Header = "引用" + item.Name + "的模块";
+
                             if(stFileBase.FileType == STFileBase.STFileType.POU)
                             {
                                 ListView_YinYong.ItemsSource = FindYinYongByName(stFileBase.Name);
@@ -128,7 +130,38 @@ namespace STTool
 
         private void ListView_YinYong_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            YinYongListViewItem item = (YinYongListViewItem)ListView_YinYong.SelectedItem;
+            if(item != null)
+            {
+                STFileBase stFileBase = GVL.gFileMgr.FindSTFileByFullName(item.FullName);
+                if (stFileBase != null)
+                {
+                    TextBlock_D.Text = stFileBase.DeclarationText;
+                    TextBlock_I.Text = stFileBase.ImplementationText;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("not find " + item.FBName);
+                }
+            }
+        }
+
+        private void MenuItem_FontSize_ADD_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock_D.FontSize += 1;
+            TextBlock_I.FontSize += 1;
+        }
+
+        private void MenuItem_FontSize_DEL_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock_D.FontSize -= 1;
+            TextBlock_I.FontSize -= 1;
+        }
+
+        private void MenuItem_TongJi_Click(object sender, RoutedEventArgs e)
+        {
+            TongJiForm form = new TongJiForm();
+            form.Show();
         }
     }
 }

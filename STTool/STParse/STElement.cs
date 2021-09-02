@@ -16,6 +16,8 @@ namespace STTool.STParse
             PROGRAM,
             INTERFACE,
             GVL,
+            ENUM,
+            STRUCT,
             METHOD,
             ACTION,
             UNKNOWN

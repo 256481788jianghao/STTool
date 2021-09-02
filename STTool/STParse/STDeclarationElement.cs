@@ -22,7 +22,12 @@ namespace STTool.STParse
 
         public void Parse(string content)
         {
-            if(!string.IsNullOrEmpty(content))
+            //FIXME:
+            if (FileType == STFileType.INTERFACE)
+            {
+                ElType = ElementType.INTERFACE;
+            }
+            if (!string.IsNullOrEmpty(content))
             {
                 string[] temp_lines = content.Split('\n');
                 bool is_can_input = true;
@@ -58,15 +63,51 @@ namespace STTool.STParse
             {
                 return;
             }
-            else if(m_Lines.Count == 1)
-            {
-                ParseNameAndType(m_Lines[0]);
-            }
             else
             {
+                if(FileType == STFileType.GVL)
+                {
+                    ElType = ElementType.GVL;
+                    bool start_input_var = false;
+                    STVARElement varElement = new STVARElement(STVARElement.STVARType.UNKNOWN);
+                    for (int i = 0; i < m_Lines.Count; i++)
+                    {
+                        if (m_Lines[i].Content.StartsWith("{"))
+                        {
+                            continue;
+                        }
+                        if (m_Lines[i].Words[0] == "VAR_GLOBAL" && !start_input_var)
+                        {
+                            start_input_var = true;
+                            varElement = new STVARElement(STVARElement.STVARType.GLOBAL);
+                            continue;
+                        }
+                        if (m_Lines[i].Words[0] == "END_VAR" && start_input_var)
+                        {
+                            start_input_var = false;
+                            VARElements.Add(varElement);
+                        }
+                        if (start_input_var)
+                        {
+                            varElement.Lines.Add(m_Lines[i]);
+                        }
+                    }
+                    foreach (STVARElement item in VARElements)
+                    {
+                        item.Parse();
+                    }
+                }
+                if(FileType == STFileType.INTERFACE)
+                {
+                    ElType = ElementType.INTERFACE;
+                }
+                if(FileType == STFileType.DUT)
+                {
+
+                }
                 if(FileType == STFileType.POU)
                 {
-                    ParseNameAndType(m_Lines[0]);
+                    ParseNameAndTypePOU(m_Lines[0]);
                     bool start_input_var = false;
                     STVARElement varElement = new STVARElement(STVARElement.STVARType.UNKNOWN);
                     for (int i = 1; i < m_Lines.Count; i++)
@@ -114,7 +155,7 @@ namespace STTool.STParse
             }
         }
 
-        private void ParseNameAndType(STLine line)
+        private void ParseNameAndTypePOU(STLine line)
         {
             if(line.Words.Count >= 2)
             {

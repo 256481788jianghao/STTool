@@ -15,7 +15,12 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="分析">
+                <MenuItem x:Name="MenuItem_TongJi" Header="类型统计" Click="MenuItem_TongJi_Click"></MenuItem>
                 <MenuItem Header="被引用堆栈"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="字号">
+                <MenuItem x:Name="MenuItem_FontSize_ADD" Header="+" Click="MenuItem_FontSize_ADD_Click"></MenuItem>
+                <MenuItem x:Name="MenuItem_FontSize_DEL" Header="-" Click="MenuItem_FontSize_DEL_Click"></MenuItem>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
@@ -67,7 +72,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <GroupBox Header="引用此模块的模块">
+                <GroupBox x:Name="GroupBox_YinYong" Header="引用xx的模块">
                     <ListView x:Name="ListView_YinYong" SelectionChanged="ListView_YinYong_SelectionChanged">
                         <ListView.View>
                             <GridView>
