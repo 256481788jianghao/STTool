@@ -18,10 +18,19 @@ namespace STTool.STParse
         }
         public STVARType VARType = STVARType.UNKNOWN;
         public List<STLine> Lines = new List<STLine>();
+        public List<STVARIABLEElement> Variables = new List<STVARIABLEElement>();
 
         public STVARElement(STVARType vALType)
         {
             VARType = vALType;
+        }
+
+        public void Parse()
+        {
+            foreach(STLine item in Lines)
+            {
+                Variables.Add(new STVARIABLEElement(item.Content));
+            }
         }
     }
 }

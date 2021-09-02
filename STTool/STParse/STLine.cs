@@ -9,11 +9,18 @@ namespace STTool.STParse
     class STLine
     {
         public List<string> Words = null;
+        public string Content = null;
 
         public STLine(string linestr)
         {
-            linestr = linestr.Trim();
-            string[] sp = linestr.Split(' ');
+            int index = linestr.IndexOf("//");
+            if(index > 0)
+            {
+                linestr = linestr.Substring(0, index);
+            }
+            
+            Content = linestr.Trim();
+            string[] sp = Content.Split(' ');
             Words = new List<string>();
             foreach (string item in sp)
             {

@@ -103,6 +103,7 @@
     <Compile Include="STParse\STImplementationElement.cs" />
     <Compile Include="STParse\STLine.cs" />
     <Compile Include="STParse\STVARElement.cs" />
+    <Compile Include="STParse\STVARIABLEElement.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

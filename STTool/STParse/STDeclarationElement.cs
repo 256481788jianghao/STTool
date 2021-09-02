@@ -25,13 +25,27 @@ namespace STTool.STParse
             if(!string.IsNullOrEmpty(content))
             {
                 string[] temp_lines = content.Split('\n');
+                bool is_can_input = true;
                 foreach(string item in temp_lines)
                 {
-                    string temp = item.Replace("\r", "");
+                    string temp = item.Replace("\r", "").Trim();
                     temp = temp.Replace("\t", "");
-                    if (!string.IsNullOrEmpty(temp))
+                    if (!string.IsNullOrEmpty(temp) && !temp.StartsWith("//"))
                     {
-                        m_Lines.Add(new STLine(temp));
+                        if (temp.StartsWith("(*"))
+                        {
+                            is_can_input = false;
+                        }
+                        if (temp.Contains("*)"))
+                        {
+                            is_can_input = true;
+                            continue;
+                        }
+                        if (is_can_input)
+                        {
+                            m_Lines.Add(new STLine(temp));
+                        }
+                        
                     }
                 }
                 ParseLines();
@@ -91,8 +105,12 @@ namespace STTool.STParse
                             varElement.Lines.Add(m_Lines[i]);
                         }
                     }
-                }
-                
+                }  
+            }
+
+            foreach(STVARElement item in VARElements)
+            {
+                item.Parse();
             }
         }
 
