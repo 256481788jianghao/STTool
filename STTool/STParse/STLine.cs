@@ -12,9 +12,26 @@ namespace STTool.STParse
 
         public STLine(string linestr)
         {
-            linestr = linestr.Substring(0, linestr.Length);
+            linestr = linestr.Trim();
             string[] sp = linestr.Split(' ');
-            Words = new List<string>(sp);
+            Words = new List<string>();
+            foreach (string item in sp)
+            {
+                if (item.StartsWith("{") && item.Length > 1)
+                {
+                    Words.Add("{");
+                    Words.Add(item.Substring(1));
+                }
+                else if (item.EndsWith("}") && item.Length > 1)
+                {
+                    Words.Add(item.Substring(0, item.Length-1));
+                    Words.Add("}");
+                }
+                else
+                {
+                    Words.Add(item);
+                }
+            }
         }
     }
 }

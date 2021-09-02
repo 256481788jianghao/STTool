@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static STTool.STFile.STFileBase;
 
 namespace STTool.STParse
 {
@@ -20,13 +21,11 @@ namespace STTool.STParse
             UNKNOWN
         }
 
-        public STDeclarationElement Declaration = new STDeclarationElement();
-        public STImplementationElement Implementation = new STImplementationElement();
+        public STFileType FileType;
 
-        public void Parse(string DContent,string IContent)
+        public STElement(STFileType fileType)
         {
-            Declaration.Parse(DContent);
-            Implementation.Parse(IContent);
+            FileType = fileType;
         }
     }
 }

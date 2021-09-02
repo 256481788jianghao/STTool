@@ -22,7 +22,8 @@ namespace STTool.File
         {
             DirectoryInfo TheFolder = new DirectoryInfo(m_rootpath);
             FileTreeViewItem item = new FileTreeViewItem();
-            item.Name = m_rootpath;
+            item.Name = System.IO.Path.GetFileName(m_rootpath);
+            item.FullName = m_rootpath;
             ParseInternal(item, TheFolder);
             FileTreeViewList.Add(item);
         }

@@ -1,23 +1,24 @@
-﻿using System.Xml;
+﻿using STTool.STParse;
+using System.Xml;
+using static STTool.STFile.STFileBase;
 
 namespace STTool.STFile
 {
-    class STMethod
+    class STMethod : STParseFile
     {
         XmlNode xnode;
 
-        public string Name;
-        public string DeclarationText;
-        public string ImplementationText;
-        
+        public string Name;    
         public string parentName;
-        
+
 
         public STMethod(string pName,XmlNode node)
         {
             this.parentName = pName;
             this.xnode = node;
+            FileType = STFileType.Method;
             Parse();
+            ParseSTElement();
         }
 
         void Parse()

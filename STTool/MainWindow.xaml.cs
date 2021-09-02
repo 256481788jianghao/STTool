@@ -34,10 +34,11 @@ namespace STTool
         private void Button_DicSelect_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            string testpath = "D:\\project\\project_Snake\\Snake_arm_robot219042\\branch_jh\\SnakeArmRobotProject_GuangZhou\\SnakeArmRobot";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ShowLabel_Dic.ValueStr = dialog.SelectedPath;
-                FolderPath = dialog.SelectedPath;
+                ShowLabel_Dic.ValueStr = testpath;// dialog.SelectedPath;
+                FolderPath = testpath;// dialog.SelectedPath;
 
                 GVL.gFileMgr = new FileMgr(FolderPath);
                 GVL.gFileMgr.Parse();
@@ -81,6 +82,8 @@ namespace STTool
                         {
                             TextBlock_D.Text = stFileBase.DeclarationText;
                             TextBlock_I.Text = stFileBase.ImplementationText;
+
+                            ListView_YinYong.Items.Add(new YinYongListViewItem(stFileBase.DeclarationElement.Name, stFileBase.DeclarationElement.ElType.ToString(),false));
                         }
                         else
                         {

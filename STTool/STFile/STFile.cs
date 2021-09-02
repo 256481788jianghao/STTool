@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace STTool.STFile
 {
-    class STFileBase
+    class STFileBase:STParseFile
     {
         public enum STFileType
         {
@@ -16,30 +16,22 @@ namespace STTool.STFile
             DUT,
             INTERFACE,
             GVL,
+            Method,
             UNKNOWN
         }
 
 
         protected XmlDocument xmlDoc;
-
         public string Name;
-        public string DeclarationText;
-        public string ImplementationText;
-        public STFileType FileType = STFileType.UNKNOWN;
         public string FullName;
-        public STElement STObject;
+
+       
 
         public STFileBase(string fullName)
         {
             FullName = fullName;
             xmlDoc = new XmlDocument();
             xmlDoc.Load(FullName);
-        }
-
-        public void ParseSTElement()
-        {
-            STObject = new STElement();
-            STObject.Parse(DeclarationText, ImplementationText);
         }
     }
 }
